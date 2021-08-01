@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api-development
-  namespace: api
+  namespace: prod
 spec:
   selector:
     matchLabels:
@@ -21,14 +21,17 @@ spec:
         - containerPort: 443
           name: https
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: api-configmap
         env:
-        - name: Mongo__Host
-          value: "mongo-service.mongo.svc.cluster.local"
         - name: Mongo__User
-          value: "mongouser"
+          valueFrom:
+            secretKeyRef:
+              key: MONGO_INITDB_ROOT_USERNAME
+              name: mongo-secret
         - name: Mongo__Password
-          value: "mongopwd"
-        - name: Mongo__Port
-          value: "27017"
-        - name: Mongo__Database
-          value: "admin"
+          valueFrom:
+            secretKeyRef:
+              key: MONGO_INITDB_ROOT_PASSWORD
+              name: mongo-secret

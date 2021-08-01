@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-deployment
-  namespace: mongo
+  name: mongodb-deployment-dev
+  namespace: dev
 spec:
   selector:
     matchLabels:
